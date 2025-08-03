@@ -52,6 +52,21 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				processes: {
+					DEFAULT: 'hsl(var(--processes))',
+					light: 'hsl(var(--processes-light))'
+				},
+				pessoas: {
+					DEFAULT: 'hsl(var(--pessoas))',
+					light: 'hsl(var(--pessoas-light))'
+				},
+				tecnologia: {
+					DEFAULT: 'hsl(var(--tecnologia))',
+					light: 'hsl(var(--tecnologia-light))'
+				},
+				happy: 'hsl(var(--happy))',
+				neutral: 'hsl(var(--neutral))',
+				sad: 'hsl(var(--sad))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

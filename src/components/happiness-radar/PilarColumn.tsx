@@ -2,11 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Pain, PainCard } from "./PainCard";
 import { cn } from "@/lib/utils";
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 interface PilarColumnProps {
   pilar: "Processos" | "Pessoas" | "Tecnologia";
   pains: Pain[];
   onVote: (painId: string) => void;
+  onDelete: (painId: string) => void;
 }
 
 const pilarConfig = {
@@ -27,7 +29,7 @@ const pilarConfig = {
   },
 };
 
-export function PilarColumn({ pilar, pains, onVote }: PilarColumnProps) {
+export function PilarColumn({ pilar, pains, onVote, onDelete }: PilarColumnProps) {
   const config = pilarConfig[pilar];
   
   return (
@@ -62,9 +64,11 @@ export function PilarColumn({ pilar, pains, onVote }: PilarColumnProps) {
             </CardContent>
           </Card>
         ) : (
-          pains.map((pain) => (
-            <PainCard key={pain.id} pain={pain} onVote={onVote} />
-          ))
+          <SortableContext items={pains.map(p => p.id)} strategy={verticalListSortingStrategy}>
+            {pains.map((pain) => (
+              <PainCard key={pain.id} pain={pain} onVote={onVote} onDelete={onDelete} />
+            ))}
+          </SortableContext>
         )}
       </div>
     </div>

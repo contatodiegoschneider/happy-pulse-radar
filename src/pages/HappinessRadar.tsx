@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Users, Heart, MessageSquare } from "lucide-react";
+import { ArrowLeft, Users, Heart, MessageSquare, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { PilarColumn } from "@/components/happiness-radar/PilarColumn";
 import { EmotionVoting, EmotionCounts } from "@/components/happiness-radar/EmotionVoting";
@@ -77,6 +79,31 @@ export default function HappinessRadar() {
     );
   };
 
+  const handleDeletePain = (painId: string) => {
+    console.log('[HappinessRadar] Deleting pain:', painId);
+    setPains(prev => prev.filter(pain => pain.id !== painId));
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setPains((items) => {
+        const oldIndex = items.findIndex(item => item.id === active.id);
+        const newIndex = items.findIndex(item => item.id === over.id);
+        
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+  };
+
   const handleEmotionVote = (pilar: "Processos" | "Pessoas" | "Tecnologia", emotion: "happy" | "neutral" | "sad") => {
     console.log('[HappinessRadar] Emotion vote:', { pilar, emotion });
     
@@ -107,11 +134,18 @@ export default function HappinessRadar() {
     }));
   };
 
+  // Ordenar dores por votos (mais votadas primeiro)
+  const sortedPains = [...pains].sort((a, b) => b.votes - a.votes);
+  
   const groupedPains = {
-    Processos: pains.filter(p => p.pilar === "Processos"),
-    Pessoas: pains.filter(p => p.pilar === "Pessoas"),
-    Tecnologia: pains.filter(p => p.pilar === "Tecnologia"),
+    Processos: sortedPains.filter(p => p.pilar === "Processos"),
+    Pessoas: sortedPains.filter(p => p.pilar === "Pessoas"),
+    Tecnologia: sortedPains.filter(p => p.pilar === "Tecnologia"),
   };
+
+  // Dor mais votada
+  const topPain = sortedPains[0];
+  const topPainVotes = topPain?.votes || 0;
 
   const totalPains = pains.length;
   const totalVotes = pains.reduce((acc, pain) => acc + pain.votes, 0);
@@ -185,10 +219,10 @@ export default function HappinessRadar() {
           <Card className="shadow-[var(--shadow-card)]">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <Users className="h-8 w-8 text-tecnologia" />
+                <Trophy className="h-8 w-8 text-yellow-500" />
                 <div>
-                  <p className="text-2xl font-bold">Online</p>
-                  <p className="text-xs text-muted-foreground">Status da Reunião</p>
+                  <p className="text-2xl font-bold">{topPainVotes}</p>
+                  <p className="text-xs text-muted-foreground">Dor Mais Votada</p>
                 </div>
               </div>
             </CardContent>
@@ -207,23 +241,32 @@ export default function HappinessRadar() {
               </CardHeader>
             </Card>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <PilarColumn
-                pilar="Processos"
-                pains={groupedPains.Processos}
-                onVote={handleVotePain}
-              />
-              <PilarColumn
-                pilar="Pessoas"
-                pains={groupedPains.Pessoas}
-                onVote={handleVotePain}
-              />
-              <PilarColumn
-                pilar="Tecnologia"
-                pains={groupedPains.Tecnologia}
-                onVote={handleVotePain}
-              />
-            </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <PilarColumn
+                  pilar="Processos"
+                  pains={groupedPains.Processos}
+                  onVote={handleVotePain}
+                  onDelete={handleDeletePain}
+                />
+                <PilarColumn
+                  pilar="Pessoas"
+                  pains={groupedPains.Pessoas}
+                  onVote={handleVotePain}
+                  onDelete={handleDeletePain}
+                />
+                <PilarColumn
+                  pilar="Tecnologia"
+                  pains={groupedPains.Tecnologia}
+                  onVote={handleVotePain}
+                  onDelete={handleDeletePain}
+                />
+              </div>
+            </DndContext>
           </div>
 
           {/* Sidebar com Votação Emocional */}

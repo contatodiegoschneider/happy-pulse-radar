@@ -12,10 +12,13 @@ import { EmotionVoting, EmotionCounts } from "@/components/happiness-radar/Emoti
 import { AddPainDialog } from "@/components/happiness-radar/AddPainDialog";
 import { Pain } from "@/components/happiness-radar/PainCard";
 import SessionIndicator from "@/components/SessionIndicator";
+import { useAuth } from "@/hooks/useAuth";
 
 console.log('[HappinessRadar] Component loaded');
 
 export default function HappinessRadar() {
+  const { isAdmin } = useAuth();
+  
   const [pains, setPains] = useState<Pain[]>([
     {
       id: "1",
@@ -209,15 +212,17 @@ export default function HappinessRadar() {
           </div>
           
           <div className="flex items-center gap-3">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleResetVotes}
-              className="gap-2 text-orange-600 border-orange-200 hover:bg-orange-50"
-            >
-              <RotateCcw className="h-4 w-4" />
-              Nova Votação
-            </Button>
+            {isAdmin && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleResetVotes}
+                className="gap-2 text-orange-600 border-orange-200 hover:bg-orange-50"
+              >
+                <RotateCcw className="h-4 w-4" />
+                Nova Votação
+              </Button>
+            )}
             <AddPainDialog onAddPain={handleAddPain} />
           </div>
         </div>

@@ -45,6 +45,10 @@ const Login = () => {
           <CardTitle className="text-2xl text-center">Happiness Radar</CardTitle>
           <CardDescription className="text-center">
             Insira o código de acesso para participar da avaliação
+            <br />
+            <span className="text-xs text-muted-foreground mt-1 block">
+              Use o código de admin para acessar funcionalidades especiais
+            </span>
           </CardDescription>
         </CardHeader>
         <CardContent>

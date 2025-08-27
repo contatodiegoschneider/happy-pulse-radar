@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 interface AuthState {
   isAuthenticated: boolean;
+  isAdmin: boolean;
   sessionTimeLeft: number;
   login: (code: string) => boolean;
   logout: () => void;
@@ -9,6 +10,7 @@ interface AuthState {
 }
 
 const ACCESS_CODE = 'RADAR2024';
+const ADMIN_CODE = 'ADMIN2024';
 const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 horas em milissegundos
 const STORAGE_KEY = 'happiness_radar_session';
 
@@ -16,19 +18,26 @@ export const useAuth = (): AuthState => {
   // Inicializar com o valor correto baseado na sessão existente
   const getInitialAuthState = () => {
     const sessionData = localStorage.getItem(STORAGE_KEY);
-    if (!sessionData) return false;
+    if (!sessionData) return { auth: false, admin: false };
     
     try {
-      const { timestamp } = JSON.parse(sessionData);
+      const { timestamp, code } = JSON.parse(sessionData);
       const timeElapsed = Date.now() - timestamp;
       const timeLeft = SESSION_DURATION - timeElapsed;
-      return timeLeft > 0;
+      const isValidSession = timeLeft > 0;
+      const isAdminSession = code === ADMIN_CODE;
+      return { 
+        auth: isValidSession, 
+        admin: isValidSession && isAdminSession 
+      };
     } catch {
-      return false;
+      return { auth: false, admin: false };
     }
   };
 
-  const [isAuthenticated, setIsAuthenticated] = useState(getInitialAuthState);
+  const initialState = getInitialAuthState();
+  const [isAuthenticated, setIsAuthenticated] = useState(initialState.auth);
+  const [isAdmin, setIsAdmin] = useState(initialState.admin);
   const [sessionTimeLeft, setSessionTimeLeft] = useState(0);
 
   const checkSession = () => {
@@ -38,12 +47,13 @@ export const useAuth = (): AuthState => {
     if (!sessionData) {
       console.log('[Auth] No session data found');
       setIsAuthenticated(false);
+      setIsAdmin(false);
       setSessionTimeLeft(0);
       return false;
     }
 
     try {
-      const { timestamp } = JSON.parse(sessionData);
+      const { timestamp, code } = JSON.parse(sessionData);
       const timeElapsed = Date.now() - timestamp;
       const timeLeft = SESSION_DURATION - timeElapsed;
 
@@ -57,6 +67,7 @@ export const useAuth = (): AuthState => {
 
       console.log('[Auth] Session valid, setting authenticated');
       setIsAuthenticated(true);
+      setIsAdmin(code === ADMIN_CODE);
       setSessionTimeLeft(timeLeft);
       return true;
     } catch (error) {
@@ -67,13 +78,14 @@ export const useAuth = (): AuthState => {
   };
 
   const login = (code: string): boolean => {
-    if (code === ACCESS_CODE) {
+    if (code === ACCESS_CODE || code === ADMIN_CODE) {
       const sessionData = {
         timestamp: Date.now(),
         code: code
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionData));
       setIsAuthenticated(true);
+      setIsAdmin(code === ADMIN_CODE);
       setSessionTimeLeft(SESSION_DURATION);
       return true;
     }
@@ -83,17 +95,26 @@ export const useAuth = (): AuthState => {
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setIsAuthenticated(false);
+    setIsAdmin(false);
     setSessionTimeLeft(0);
   };
 
   const renewSession = () => {
     if (isAuthenticated) {
-      const sessionData = {
-        timestamp: Date.now(),
-        code: ACCESS_CODE
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionData));
-      setSessionTimeLeft(SESSION_DURATION);
+      const sessionData = localStorage.getItem(STORAGE_KEY);
+      if (sessionData) {
+        try {
+          const { code } = JSON.parse(sessionData);
+          const newSessionData = {
+            timestamp: Date.now(),
+            code: code
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(newSessionData));
+          setSessionTimeLeft(SESSION_DURATION);
+        } catch {
+          logout();
+        }
+      }
     }
   };
 
@@ -109,6 +130,7 @@ export const useAuth = (): AuthState => {
 
   return {
     isAuthenticated,
+    isAdmin,
     sessionTimeLeft,
     login,
     logout,

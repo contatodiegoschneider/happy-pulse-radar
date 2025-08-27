@@ -10,13 +10,15 @@ import { useToast } from "@/hooks/use-toast";
 
 interface AddPainDialogProps {
   onAddPain: (pain: { author: string; description: string; pilar: "Processos" | "Pessoas" | "Tecnologia" }) => void;
+  defaultPilar?: "Processos" | "Pessoas" | "Tecnologia";
+  children?: React.ReactNode;
 }
 
-export function AddPainDialog({ onAddPain }: AddPainDialogProps) {
+export function AddPainDialog({ onAddPain, defaultPilar, children }: AddPainDialogProps) {
   const [open, setOpen] = useState(false);
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
-  const [pilar, setPilar] = useState<"Processos" | "Pessoas" | "Tecnologia" | "">("");
+  const [pilar, setPilar] = useState<"Processos" | "Pessoas" | "Tecnologia" | "">(defaultPilar || "");
   const { toast } = useToast();
 
   const handleSubmit = () => {
@@ -38,7 +40,7 @@ export function AddPainDialog({ onAddPain }: AddPainDialogProps) {
     // Reset form
     setAuthor("");
     setDescription("");
-    setPilar("");
+    setPilar(defaultPilar || "");
     setOpen(false);
 
     toast({
@@ -50,10 +52,12 @@ export function AddPainDialog({ onAddPain }: AddPainDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="gap-2 shadow-lg hover:shadow-xl transition-shadow">
-          <Plus className="h-4 w-4" />
-          Adicionar Dor
-        </Button>
+        {children || (
+          <Button className="gap-2 shadow-lg hover:shadow-xl transition-shadow">
+            <Plus className="h-4 w-4" />
+            Adicionar Dor
+          </Button>
+        )}
       </DialogTrigger>
       
       <DialogContent className="sm:max-w-md">
@@ -75,19 +79,21 @@ export function AddPainDialog({ onAddPain }: AddPainDialogProps) {
             />
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="pilar">Pilar</Label>
-            <Select value={pilar} onValueChange={(value) => setPilar(value as "Processos" | "Pessoas" | "Tecnologia" | "")}>
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione o pilar..." />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Processos">⚙️ Processos</SelectItem>
-                <SelectItem value="Pessoas">👥 Pessoas</SelectItem>
-                <SelectItem value="Tecnologia">💻 Tecnologia</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          {!defaultPilar && (
+            <div className="space-y-2">
+              <Label htmlFor="pilar">Pilar</Label>
+              <Select value={pilar} onValueChange={(value) => setPilar(value as "Processos" | "Pessoas" | "Tecnologia" | "")}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o pilar..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Processos">⚙️ Processos</SelectItem>
+                  <SelectItem value="Pessoas">👥 Pessoas</SelectItem>
+                  <SelectItem value="Tecnologia">💻 Tecnologia</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           
           <div className="space-y-2">
             <Label htmlFor="description">Descrição da dor</Label>

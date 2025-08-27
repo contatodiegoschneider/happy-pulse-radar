@@ -1,14 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Pain, PainCard } from "./PainCard";
+import { AddPainDialog } from "./AddPainDialog";
 import { cn } from "@/lib/utils";
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { Plus } from "lucide-react";
 
 interface PilarColumnProps {
   pilar: "Processos" | "Pessoas" | "Tecnologia";
   pains: Pain[];
   onVote: (painId: string) => void;
   onDelete: (painId: string) => void;
+  onAddPain: (pain: { author: string; description: string; pilar: "Processos" | "Pessoas" | "Tecnologia" }) => void;
 }
 
 const pilarConfig = {
@@ -29,7 +33,7 @@ const pilarConfig = {
   },
 };
 
-export function PilarColumn({ pilar, pains, onVote, onDelete }: PilarColumnProps) {
+export function PilarColumn({ pilar, pains, onVote, onDelete, onAddPain }: PilarColumnProps) {
   const config = pilarConfig[pilar];
   
   return (
@@ -47,9 +51,17 @@ export function PilarColumn({ pilar, pains, onVote, onDelete }: PilarColumnProps
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <Badge variant="outline" className={cn("text-xs", config.bgClass)}>
-            {pains.length} {pains.length === 1 ? "dor" : "dores"}
-          </Badge>
+          <div className="flex items-center justify-between">
+            <Badge variant="outline" className={cn("text-xs", config.bgClass)}>
+              {pains.length} {pains.length === 1 ? "dor" : "dores"}
+            </Badge>
+            <AddPainDialog onAddPain={onAddPain} defaultPilar={pilar}>
+              <Button size="sm" variant="ghost" className="gap-1 text-xs h-7">
+                <Plus className="h-3 w-3" />
+                Adicionar
+              </Button>
+            </AddPainDialog>
+          </div>
         </CardContent>
       </Card>
       

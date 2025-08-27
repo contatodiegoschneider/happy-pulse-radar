@@ -252,18 +252,21 @@ export default function HappinessRadar() {
                   pains={groupedPains.Processos}
                   onVote={handleVotePain}
                   onDelete={handleDeletePain}
+                  onAddPain={handleAddPain}
                 />
                 <PilarColumn
                   pilar="Pessoas"
                   pains={groupedPains.Pessoas}
                   onVote={handleVotePain}
                   onDelete={handleDeletePain}
+                  onAddPain={handleAddPain}
                 />
                 <PilarColumn
                   pilar="Tecnologia"
                   pains={groupedPains.Tecnologia}
                   onVote={handleVotePain}
                   onDelete={handleDeletePain}
+                  onAddPain={handleAddPain}
                 />
               </div>
             </DndContext>

@@ -18,7 +18,10 @@ export const useAuth = (): AuthState => {
 
   const checkSession = () => {
     const sessionData = localStorage.getItem(STORAGE_KEY);
+    console.log('[Auth] Checking session:', sessionData);
+    
     if (!sessionData) {
+      console.log('[Auth] No session data found');
       setIsAuthenticated(false);
       setSessionTimeLeft(0);
       return false;
@@ -29,15 +32,20 @@ export const useAuth = (): AuthState => {
       const timeElapsed = Date.now() - timestamp;
       const timeLeft = SESSION_DURATION - timeElapsed;
 
+      console.log('[Auth] Time elapsed:', timeElapsed, 'Time left:', timeLeft);
+
       if (timeLeft <= 0) {
+        console.log('[Auth] Session expired');
         logout();
         return false;
       }
 
+      console.log('[Auth] Session valid, setting authenticated');
       setIsAuthenticated(true);
       setSessionTimeLeft(timeLeft);
       return true;
-    } catch {
+    } catch (error) {
+      console.log('[Auth] Error parsing session data:', error);
       logout();
       return false;
     }

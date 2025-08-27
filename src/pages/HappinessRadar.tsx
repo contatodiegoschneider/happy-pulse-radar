@@ -19,43 +19,18 @@ console.log('[HappinessRadar] Component loaded');
 export default function HappinessRadar() {
   const { isAdmin } = useAuth();
   
-  const [pains, setPains] = useState<Pain[]>([
-    {
-      id: "1",
-      author: "Ana Silva",
-      description: "O processo de aprovação de despesas é muito demorado e burocrático, gerando atrasos nos projetos.",
-      pilar: "Processos",
-      votes: 3,
-      hasVoted: false,
-    },
-    {
-      id: "2", 
-      author: "Carlos Santos",
-      description: "Falta comunicação clara entre as equipes, causando retrabalho e conflitos.",
-      pilar: "Pessoas",
-      votes: 5,
-      hasVoted: false,
-    },
-    {
-      id: "3",
-      author: "Maria Oliveira", 
-      description: "O sistema de gestão é lento e trava frequentemente, prejudicando a produtividade.",
-      pilar: "Tecnologia",
-      votes: 7,
-      hasVoted: true,
-    }
-  ]);
+  const [pains, setPains] = useState<Pain[]>([]);
 
   const [emotionCounts, setEmotionCounts] = useState<EmotionCounts>({
-    Processos: { happy: 2, neutral: 3, sad: 5 },
-    Pessoas: { happy: 4, neutral: 2, sad: 4 },
-    Tecnologia: { happy: 1, neutral: 4, sad: 5 },
+    Processos: { happy: 0, neutral: 0, sad: 0 },
+    Pessoas: { happy: 0, neutral: 0, sad: 0 },
+    Tecnologia: { happy: 0, neutral: 0, sad: 0 },
   });
 
   const [userVotes, setUserVotes] = useState<{ [pilar: string]: "happy" | "neutral" | "sad" | null }>({
     Processos: null,
-    Pessoas: "neutral",
-    Tecnologia: "sad",
+    Pessoas: null,
+    Tecnologia: null,
   });
 
   const handleAddPain = (newPain: { author: string; description: string; pilar: "Processos" | "Pessoas" | "Tecnologia" }) => {

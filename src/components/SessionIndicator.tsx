@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -9,10 +10,16 @@ import { useToast } from '@/hooks/use-toast';
 
 const SessionIndicator = () => {
   const { sessionTimeLeft, logout, renewSession } = useAuth();
+  const navigate = useNavigate();
   const [isRenewDialogOpen, setIsRenewDialogOpen] = useState(false);
   const [renewCode, setRenewCode] = useState('');
   const [isRenewing, setIsRenewing] = useState(false);
   const { toast } = useToast();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const formatTime = (ms: number) => {
     const hours = Math.floor(ms / (1000 * 60 * 60));
@@ -116,7 +123,7 @@ const SessionIndicator = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={logout}
+            onClick={handleLogout}
             className="h-8"
           >
             <LogOut className="h-3 w-3 mr-1" />

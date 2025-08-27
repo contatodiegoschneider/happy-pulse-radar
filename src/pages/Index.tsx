@@ -62,15 +62,43 @@ const Index = () => {
         </div>
 
         <div className="text-center">
-          <Link to="/happiness-radar">
-            <Button size="lg" className="gap-3 shadow-lg hover:shadow-xl transition-all">
-              <span className="text-lg">🎯</span>
-              Acessar Radar da Felicidade
-              <ArrowRight className="h-5 w-5" />
-            </Button>
-          </Link>
+          {/* Botão principal com muito destaque */}
+          <div className="relative mb-8">
+            {/* Glow effect background */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-primary via-blue-500 to-purple-500 rounded-2xl blur-xl opacity-30 animate-pulse"></div>
+            
+            <Link to="/happiness-radar">
+              <Button 
+                size="lg" 
+                className="relative px-12 py-6 text-xl font-bold bg-gradient-to-r from-primary via-blue-600 to-purple-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-purple-600/90 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 group border-2 border-white/20"
+              >
+                {/* Shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-[shine_0.8s_ease-out] transition-opacity"></div>
+                
+                <div className="relative flex items-center gap-4">
+                  <span className="text-3xl animate-bounce">🎯</span>
+                  <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                    Acessar Radar da Felicidade
+                  </span>
+                  <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-2" />
+                </div>
+              </Button>
+            </Link>
+          </div>
           
-          <div className="mt-8 p-4 border border-muted rounded-lg bg-muted/30">
+          {/* Call to action adicional */}
+          <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 via-blue-500/10 to-purple-500/10 rounded-xl border border-primary/20">
+            <p className="text-lg font-semibold text-primary mb-2 flex items-center justify-center gap-2">
+              <span className="text-2xl">✨</span>
+              Comece agora sua jornada de felicidade!
+              <span className="text-2xl">✨</span>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Participe da avaliação colaborativa e ajude a construir um ambiente mais feliz
+            </p>
+          </div>
+          
+          <div className="p-4 border border-muted rounded-lg bg-muted/30">
             <p className="text-sm text-muted-foreground">
               <strong>3 Pilares:</strong> Processos ⚙️ · Pessoas 👥 · Tecnologia 💻
             </p>

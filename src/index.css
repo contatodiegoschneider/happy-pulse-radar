@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -164,5 +165,39 @@ All colors MUST be HSL.
   
   .emotion-sad {
     @apply hover:bg-[hsl(var(--sad))] hover:bg-opacity-10 hover:border-[hsl(var(--sad))];
+  }
+}
+
+@layer utilities {
+  /* Animação shine para o botão principal */
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%) skewX(-12deg);
+    }
+    100% {
+      transform: translateX(300%) skewX(-12deg);
+    }
+  }
+  
+  .animate-shine {
+    animation: shine 0.8s ease-out;
+  }
+  
+  /* Efeitos especiais para o botão principal */
+  .glow-button {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .glow-button::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, hsl(var(--primary)), hsl(220 100% 65%), hsl(280 100% 60%));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.3;
+    filter: blur(8px);
+    animation: pulse 2s infinite;
   }
 }

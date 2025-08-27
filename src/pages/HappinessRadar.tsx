@@ -11,6 +11,7 @@ import { PilarColumn } from "@/components/happiness-radar/PilarColumn";
 import { EmotionVoting, EmotionCounts } from "@/components/happiness-radar/EmotionVoting";
 import { AddPainDialog } from "@/components/happiness-radar/AddPainDialog";
 import { Pain } from "@/components/happiness-radar/PainCard";
+import SessionIndicator from "@/components/SessionIndicator";
 
 console.log('[HappinessRadar] Component loaded');
 
@@ -156,6 +157,11 @@ export default function HappinessRadar() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto p-6 max-w-7xl">
+        {/* Session Indicator */}
+        <div className="mb-6">
+          <SessionIndicator />
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">

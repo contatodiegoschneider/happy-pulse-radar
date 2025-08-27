@@ -41,19 +41,19 @@ export function EmotionVoting({ emotionCounts, userVotes, onVote }: EmotionVotin
         </p>
       </CardHeader>
       
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8">
         {pilares.map((pilar) => (
-          <div key={pilar} className="space-y-3">
+          <div key={pilar} className="space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-medium text-sm">{pilar}</h4>
+              <h4 className="font-semibold text-base">{pilar}</h4>
               {userVotes[pilar] && (
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="text-sm px-3 py-1">
                   Você votou: {emotions.find(e => e.key === userVotes[pilar])?.emoji}
                 </Badge>
               )}
             </div>
             
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-4">
               {emotions.map((emotion) => {
                 const isSelected = userVotes[pilar] === emotion.key;
                 const count = emotionCounts[pilar][emotion.key];
@@ -62,18 +62,18 @@ export function EmotionVoting({ emotionCounts, userVotes, onVote }: EmotionVotin
                   <Button
                     key={emotion.key}
                     variant={isSelected ? "default" : "outline"}
-                    size="sm"
+                    size="lg"
                     onClick={() => onVote(pilar, emotion.key)}
                     className={cn(
-                      "emotion-button flex flex-col gap-1 h-auto py-3 relative",
+                      "emotion-button flex flex-col gap-2 h-auto py-4 px-4 relative",
                       `emotion-${emotion.key}`,
                       isSelected && "ring-2 ring-primary"
                     )}
                   >
-                    <span className="text-xl">{emotion.emoji}</span>
-                    <span className="text-xs font-medium">{emotion.label}</span>
+                    <span className="text-3xl">{emotion.emoji}</span>
+                    <span className="text-sm font-medium">{emotion.label}</span>
                     {count > 0 && (
-                      <Badge variant="secondary" className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
+                      <Badge variant="secondary" className="absolute -top-2 -right-2 h-6 w-6 p-0 flex items-center justify-center text-sm">
                         {count}
                       </Badge>
                     )}
@@ -82,7 +82,7 @@ export function EmotionVoting({ emotionCounts, userVotes, onVote }: EmotionVotin
               })}
             </div>
             
-            <div className="text-xs text-muted-foreground text-center">
+            <div className="text-sm text-muted-foreground text-center pt-2">
               Total: {emotionCounts[pilar].happy + emotionCounts[pilar].neutral + emotionCounts[pilar].sad} votos
             </div>
           </div>

@@ -278,13 +278,13 @@ export default function HappinessRadar() {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          {/* Pilares - 3 colunas */}
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Pilares - 3 colunas - Mais espaço */}
           <div className="xl:col-span-3">
-            <Card className="border-2 shadow-[var(--shadow-card)] mb-6">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <span className="text-xl">📊</span>
+            <Card className="border-2 shadow-[var(--shadow-card)] mb-8">
+              <CardHeader className="pb-6">
+                <CardTitle className="flex items-center gap-3 text-xl">
+                  <span className="text-2xl">📊</span>
                   Dores por Pilar
                 </CardTitle>
               </CardHeader>
@@ -295,7 +295,7 @@ export default function HappinessRadar() {
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <PilarColumn
                   pilar="Processos"
                   pains={groupedPains.Processos}

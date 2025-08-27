@@ -38,13 +38,13 @@ export function PilarColumn({ pilar, pains, onVote, onDelete, onAddPain }: Pilar
   
   return (
     <div className="flex flex-col h-full">
-      <Card className="mb-4 border-2">
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-3 text-lg">
-            <span className="text-2xl">{config.icon}</span>
+      <Card className="mb-6 border-2">{/* Increased margin from 4 to 6 */}
+        <CardHeader className="pb-4">{/* Increased padding bottom */}
+          <CardTitle className="flex items-center gap-3 text-xl">{/* Increased from text-lg to text-xl */}
+            <span className="text-3xl">{config.icon}</span>{/* Increased from text-2xl to text-3xl */}
             <div>
               <h3 className="font-semibold">{pilar}</h3>
-              <p className="text-xs text-muted-foreground font-normal">
+              <p className="text-sm text-muted-foreground font-normal">{/* Increased from text-xs to text-sm */}
                 {config.description}
               </p>
             </div>
@@ -52,12 +52,12 @@ export function PilarColumn({ pilar, pains, onVote, onDelete, onAddPain }: Pilar
         </CardHeader>
         <CardContent className="pt-0">
           <div className="flex items-center justify-between">
-            <Badge variant="outline" className={cn("text-xs", config.bgClass)}>
+            <Badge variant="outline" className={cn("text-sm px-3 py-1", config.bgClass)}>{/* Increased padding and text size */}
               {pains.length} {pains.length === 1 ? "dor" : "dores"}
             </Badge>
             <AddPainDialog onAddPain={onAddPain} defaultPilar={pilar}>
-              <Button size="sm" variant="ghost" className="gap-1 text-xs h-7">
-                <Plus className="h-3 w-3" />
+              <Button size="sm" variant="ghost" className="gap-2 text-sm h-8">{/* Increased gap and text size */}
+                <Plus className="h-4 w-4" />{/* Increased icon size */}
                 Adicionar
               </Button>
             </AddPainDialog>
@@ -65,11 +65,11 @@ export function PilarColumn({ pilar, pains, onVote, onDelete, onAddPain }: Pilar
         </CardContent>
       </Card>
       
-      <div className="flex-1 space-y-4 overflow-y-auto max-h-[60vh]">
+      <div className="flex-1 space-y-5 overflow-y-auto max-h-[60vh]">{/* Increased spacing from 4 to 5 */}
         {pains.length === 0 ? (
           <Card className="border-dashed border-2 border-muted">
-            <CardContent className="flex items-center justify-center py-8">
-              <p className="text-muted-foreground text-sm text-center">
+            <CardContent className="flex items-center justify-center py-12">{/* Increased padding from py-8 to py-12 */}
+              <p className="text-muted-foreground text-base text-center">{/* Increased from text-sm to text-base */}
                 Nenhuma dor adicionada ainda.<br />
                 Seja o primeiro a compartilhar!
               </p>

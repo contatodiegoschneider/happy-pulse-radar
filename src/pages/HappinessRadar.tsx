@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Users, Heart, MessageSquare, Trophy } from "lucide-react";
+import { ArrowLeft, Users, Heart, MessageSquare, Trophy, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -135,6 +135,33 @@ export default function HappinessRadar() {
     }));
   };
 
+  const handleResetVotes = () => {
+    console.log('[HappinessRadar] Resetting all votes for new monthly voting');
+    
+    // Resetar todas as dores para 0 votos e remover votos do usuário
+    setPains(prev => 
+      prev.map(pain => ({
+        ...pain,
+        votes: 0,
+        hasVoted: false
+      }))
+    );
+
+    // Resetar contadores de emoções
+    setEmotionCounts({
+      Processos: { happy: 0, neutral: 0, sad: 0 },
+      Pessoas: { happy: 0, neutral: 0, sad: 0 },
+      Tecnologia: { happy: 0, neutral: 0, sad: 0 },
+    });
+
+    // Resetar votos do usuário
+    setUserVotes({
+      Processos: null,
+      Pessoas: null,
+      Tecnologia: null,
+    });
+  };
+
   // Ordenar dores por votos (mais votadas primeiro)
   const sortedPains = [...pains].sort((a, b) => b.votes - a.votes);
   
@@ -181,7 +208,18 @@ export default function HappinessRadar() {
             </div>
           </div>
           
-          <AddPainDialog onAddPain={handleAddPain} />
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleResetVotes}
+              className="gap-2 text-orange-600 border-orange-200 hover:bg-orange-50"
+            >
+              <RotateCcw className="h-4 w-4" />
+              Nova Votação
+            </Button>
+            <AddPainDialog onAddPain={handleAddPain} />
+          </div>
         </div>
 
         {/* Stats Cards */}

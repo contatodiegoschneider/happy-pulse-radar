@@ -13,7 +13,22 @@ const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 horas em milissegundos
 const STORAGE_KEY = 'happiness_radar_session';
 
 export const useAuth = (): AuthState => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Inicializar com o valor correto baseado na sessão existente
+  const getInitialAuthState = () => {
+    const sessionData = localStorage.getItem(STORAGE_KEY);
+    if (!sessionData) return false;
+    
+    try {
+      const { timestamp } = JSON.parse(sessionData);
+      const timeElapsed = Date.now() - timestamp;
+      const timeLeft = SESSION_DURATION - timeElapsed;
+      return timeLeft > 0;
+    } catch {
+      return false;
+    }
+  };
+
+  const [isAuthenticated, setIsAuthenticated] = useState(getInitialAuthState);
   const [sessionTimeLeft, setSessionTimeLeft] = useState(0);
 
   const checkSession = () => {

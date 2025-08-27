@@ -256,10 +256,10 @@ export default function HappinessRadar() {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           {/* Pilares - 3 colunas - Mais espaço */}
           <div className="xl:col-span-3">
-            <Card className="border-2 shadow-[var(--shadow-card)] mb-8">
-              <CardHeader className="pb-6">
-                <CardTitle className="flex items-center gap-3 text-xl">
-                  <span className="text-2xl">📊</span>
+            <Card className="border-2 shadow-[var(--shadow-card)] mb-4">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <span className="text-lg">📊</span>
                   Dores por Pilar
                 </CardTitle>
               </CardHeader>

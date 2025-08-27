@@ -25,7 +25,7 @@ const Login = () => {
           title: "Acesso liberado!",
           description: "Bem-vindo ao Happiness Radar. Sessão válida por 3 horas.",
         });
-        navigate('/happiness-radar');
+        navigate('/');
       } else {
         toast({
           title: "Código inválido",

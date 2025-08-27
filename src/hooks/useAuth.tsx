@@ -6,7 +6,7 @@ interface AuthState {
   sessionTimeLeft: number;
   login: (code: string) => boolean;
   logout: () => void;
-  renewSession: () => void;
+  renewSession: (code: string) => boolean;
 }
 
 const ACCESS_CODE = 'RADAR2024';
@@ -99,23 +99,18 @@ export const useAuth = (): AuthState => {
     setSessionTimeLeft(0);
   };
 
-  const renewSession = () => {
-    if (isAuthenticated) {
-      const sessionData = localStorage.getItem(STORAGE_KEY);
-      if (sessionData) {
-        try {
-          const { code } = JSON.parse(sessionData);
-          const newSessionData = {
-            timestamp: Date.now(),
-            code: code
-          };
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(newSessionData));
-          setSessionTimeLeft(SESSION_DURATION);
-        } catch {
-          logout();
-        }
-      }
+  const renewSession = (code: string): boolean => {
+    if (isAuthenticated && (code === ACCESS_CODE || code === ADMIN_CODE)) {
+      const newSessionData = {
+        timestamp: Date.now(),
+        code: code
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSessionData));
+      setIsAdmin(code === ADMIN_CODE);
+      setSessionTimeLeft(SESSION_DURATION);
+      return true;
     }
+    return false;
   };
 
   useEffect(() => {

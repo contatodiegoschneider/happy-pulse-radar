@@ -10,7 +10,7 @@ interface AuthState {
 }
 
 const ACCESS_CODE = 'RADAR2024';
-const ADMIN_CODE = 'ADMIN2024';
+const ADMIN_CODE = 'ADMIN1234';
 const SESSION_DURATION = 3 * 60 * 60 * 1000; // 3 horas em milissegundos
 const STORAGE_KEY = 'happiness_radar_session';
 

@@ -36,9 +36,17 @@ export function EmotionVoting({ emotionCounts, userVotes, onVote }: EmotionVotin
           <span className="text-xl">💭</span>
           Como você se sente sobre cada pilar?
         </CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Selecione uma emoção para cada pilar (1 voto por pilar)
-        </p>
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            Selecione uma emoção para cada pilar (1 voto por pilar)
+          </p>
+          <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-2">
+            <p className="text-xs text-green-700 dark:text-green-300 flex items-center gap-1">
+              <span className="text-sm">🔒</span>
+              <strong>Voto sigiloso:</strong> Sua identidade é protegida e anônima.
+            </p>
+          </div>
+        </div>
       </CardHeader>
       
       <CardContent className="space-y-8">
